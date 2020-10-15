@@ -1,9 +1,21 @@
 <template>
-  <div class="modal-editar">
-    <div class="modal fade" :id="`modalComponent${idModal}`" data-backdrop="static" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" :style="modalWidth">
+  <div class="vue-modal">
+    <div
+      data-toggle="modal"
+      :data-target="`#id${idModal}`"
+      class="pointer"
+    >
+      <slot name="activator"></slot>
+    </div>
+    <div class="modal fade"
+      :id="`id${idModal}`"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
         <div class="modal-content">
-          <slot name="content-modal"></slot>
+          <slot name="modal-content"></slot>
         </div>
       </div>
     </div>
@@ -13,47 +25,37 @@
 <script>
 export default {
   name: 'ModalComponent',
-        
+
   props: {
-      value: {
-          required: true,
-          default: false,
-          type: Boolean,
-      },
-      width: {
-          required: false,
-          type: Number,
-      }
+    align: {
+      type: String,
+      default: 'center',
+    },
+    width: {
+      type: Number,
+    },
   },
 
   data: () => ({
     idModal: new Date().getTime(),
+    aligns: {
+      center: {
+      },
+      top: {
+      },
+    },
   }),
 
   computed: {
     modalWidth() {
       return this.width ? `width: ${this.width}px` : '';
-    }
-  },
-
-  methods: {
-    openModal() {
-      $(`#modalComponent${this.idModal}`).modal('show');
-    },
-
-    closeModal() {
-      $(`#modalComponent${this.idModal}`).modal('hide');
     },
   },
-
-  watch: {
-    value() {
-      if (this.value) {
-        this.openModal();
-        return;
-      }
-      this.closeModal();
-    },
-  },
-}    
+};
 </script>
+
+<style scoped>
+  .pointer {
+    cursor: pointer;
+  }
+</style>
