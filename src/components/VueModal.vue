@@ -1,9 +1,13 @@
 <template>
   <div class="vue-modal">
-    <div data-toggle="modal" :data-target="`#id${idModal}`">
+    <div
+      data-toggle="modal"
+      :data-target="`#id${idModal}`"
+      class="pointer"
+    >
       <slot name="activator"></slot>
     </div>
-    <div class="modal fade show"
+    <div class="modal fade"
       :id="`id${idModal}`"
       tabindex="-1"
       aria-labelledby="staticBackdropLabel"
@@ -11,19 +15,7 @@
     >
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            ...
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Understood</button>
-          </div>
+          <slot name="modal-content"></slot>
         </div>
       </div>
     </div>
@@ -35,9 +27,9 @@ export default {
   name: 'ModalComponent',
 
   props: {
-    value: {
-      default: false,
-      type: Boolean,
+    align: {
+      type: String,
+      default: 'center',
     },
     width: {
       type: Number,
@@ -46,6 +38,12 @@ export default {
 
   data: () => ({
     idModal: new Date().getTime(),
+    aligns: {
+      center: {
+      },
+      top: {
+      },
+    },
   }),
 
   computed: {
@@ -53,15 +51,11 @@ export default {
       return this.width ? `width: ${this.width}px` : '';
     },
   },
-
-  watch: {
-    value() {
-      if (this.value) {
-        this.openModal();
-        return;
-      }
-      this.closeModal();
-    },
-  },
 };
 </script>
+
+<style scoped>
+  .pointer {
+    cursor: pointer;
+  }
+</style>
